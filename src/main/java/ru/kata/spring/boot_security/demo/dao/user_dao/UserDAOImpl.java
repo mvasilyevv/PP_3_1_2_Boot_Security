@@ -1,10 +1,10 @@
-package ru.kata.spring.boot_security.demo.dao.userDAO;
+package ru.kata.spring.boot_security.demo.dao.user_dao;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -14,7 +14,6 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     private final Session session;
-
     @Autowired
     public UserDAOImpl(EntityManager entityManager) {
         session = entityManager.unwrap(Session.class);
@@ -51,6 +50,7 @@ public class UserDAOImpl implements UserDAO {
         User newUser = session.get(User.class, id);
         newUser.setId(updatedUser.getId());
         newUser.setUsername(updatedUser.getUsername());
+        newUser.setPassword(updatedUser.getPassword());
         newUser.setEmail(updatedUser.getEmail());
         newUser.setYearOfBirth(updatedUser.getYearOfBirth());
         newUser.setRoles(updatedUser.getRoles());

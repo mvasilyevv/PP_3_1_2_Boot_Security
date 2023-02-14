@@ -1,8 +1,8 @@
-package ru.kata.spring.boot_security.demo.models;
+package ru.kata.spring.boot_security.demo.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -24,21 +24,20 @@ public class User {
     @Column
     private String email;
 
-   @ManyToMany(fetch = FetchType.EAGER)
+   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    @JoinTable(name = "User_Role",
            joinColumns = @JoinColumn(name = "user_id"),
            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String password, int yearOfBirth, String email, List<Role> roles) {
+    public User(String username, String password, int yearOfBirth, String email) {
         this.username = username;
         this.password = password;
         this.yearOfBirth = yearOfBirth;
         this.email = email;
-        this.roles = roles;
     }
 
     public long getId() {
@@ -81,11 +80,11 @@ public class User {
         this.email = email;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

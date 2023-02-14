@@ -1,10 +1,10 @@
-package ru.kata.spring.boot_security.demo.dao.roleDAO;
+package ru.kata.spring.boot_security.demo.dao.role_dao;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -36,4 +36,12 @@ public class RoleDAOImpl implements RoleDAO {
         } catch (NoResultException ignored) {}
         return role;
     }
+
+    @Override
+    public Role createIfNotContains(String roleTitle) {
+        Role role = findByRoleTitle(roleTitle);
+        return role == null ? new Role(roleTitle) : role;
+    }
+
+
 }

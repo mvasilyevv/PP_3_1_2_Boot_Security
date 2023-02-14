@@ -1,10 +1,9 @@
-package ru.kata.spring.boot_security.demo.dao.userDAO;
+package ru.kata.spring.boot_security.demo.dao.user_dao;
 
-import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.model.User;
 import java.util.List;
 
 public interface UserDAO {
-
     List<User> findAll();
     User findById(long id);
     User findByUsername(String username);

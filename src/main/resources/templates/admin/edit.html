@@ -10,8 +10,9 @@
             <input type="text" th:field="*{username}" id="name" />
             <br>
             <br>
-            <label for="password">Введите пароль:</label>
-            <input type="text" th:field="*{password}" id="password" />
+            <label for="newPassword">Введите новый пароль:</label>
+            <input type="text" id="newPassword" name="newPassword">
+            <input type="hidden" th:field="*{password}">
             <br>
             <br>
             <label for="ageOfBirth">Введите год рождения:</label>
