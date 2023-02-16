@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.dao.user_dao;
+package ru.kata.spring.boot_security.demo.dao.user;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;

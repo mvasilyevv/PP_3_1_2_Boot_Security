@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.user_service.UserService;
+import ru.kata.spring.boot_security.demo.service.user.UserService;
 @Component
 public class DatabaseInit {
     private final UserService userService;

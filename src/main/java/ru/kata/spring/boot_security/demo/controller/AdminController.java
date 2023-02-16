@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
-import ru.kata.spring.boot_security.demo.service.role_service.RoleServiceImpl;
-import ru.kata.spring.boot_security.demo.service.user_service.UserService;
+import ru.kata.spring.boot_security.demo.service.role.RoleServiceImpl;
+import ru.kata.spring.boot_security.demo.service.user.UserService;
 
 import java.util.Set;
 import java.util.stream.Collectors;
