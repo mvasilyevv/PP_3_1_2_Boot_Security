@@ -11,6 +11,7 @@ public class SpringBootSecurityDemoApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context =  SpringApplication.run(SpringBootSecurityDemoApplication.class, args);
 		context.getBean(DatabaseInit.class).addFirstUser();
+		context.getBean(DatabaseInit.class).addSecondUser();
 	}
 
 }

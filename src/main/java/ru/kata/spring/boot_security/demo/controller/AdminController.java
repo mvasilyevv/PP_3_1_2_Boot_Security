@@ -14,11 +14,9 @@ import ru.kata.spring.boot_security.demo.service.user.UserService;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
     private final UserService userService;
     private final RoleServiceImpl roleService;
     @Autowired
@@ -27,61 +25,39 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/show")
-    public String show (Model model) {
+    @GetMapping
+    public String index (Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        model.addAttribute("user", userDetails.getUser());
-        return "admin/show";
-    }
-
-    @GetMapping("/users")
-    public String usersList (Model model) {
+        model.addAttribute("person", userDetails.getUser());
         model.addAttribute("users", userService.findAll());
-        return "admin/usersList";
-    }
-    @GetMapping("/users/new")
-    public String newUser(@ModelAttribute("user") User user) {
-        return "admin/new";
-    }
-
-    @PostMapping("/users")
-    public String addNewUser(@ModelAttribute("user") User newUser) {
-        Role role = roleService.createIfNotContains("ROLE_USER");
-        newUser.setRole(role);
-        userService.save(newUser);
-        return "redirect:/admin/users";
-    }
-
-    @GetMapping("/users/{id}")
-    public String index(@PathVariable("id") long id, Model model) {
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("emptyUser", new User());
         return "admin/index";
     }
 
-    @GetMapping("/users/{id}/edit")
-    public String edit(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
-        System.out.println(userService.findById(id).getPassword());
-        model.addAttribute("roles", roleService.findAll());
-        return "admin/edit";
-    }
-
-    @PatchMapping("/users/{id}")
-    public String updateUser(@PathVariable("id") long id, @ModelAttribute("user") User user,
-                             @RequestParam("newPassword") String newPassword) {
+    @PatchMapping("/user/{id}/edit")
+    public String updateUser(@PathVariable("id") long id, @ModelAttribute User user, @RequestParam("newPassword") String newPassword) {
         Set<Role> roles = user.getRoles().stream().map(role -> roleService.findByRoleTitle(role.getAuthority())).collect(Collectors.toSet());
         user.setRoles(roles);
-        if (!newPassword.isEmpty())
+        System.out.println(user);
+        if (newPassword != null)
             user.setPassword(newPassword);
         userService.update(user,id);
-        return "redirect:/admin/users/" + id;
+        return "redirect:/admin";
     }
 
-    @DeleteMapping("/users/{id}")
+    @PostMapping("/user/new")
+    public String addNewUser(@ModelAttribute("user") User newUser) {
+        Set<Role> roles = newUser.getRoles().stream().map(role -> roleService.findByRoleTitle(role.getRole())).collect(Collectors.toSet());
+        newUser.setRoles(roles);
+        userService.save(newUser);
+        return "redirect:/admin";
+    }
+
+    @DeleteMapping("/user/{id}/delete")
     public String delete(@PathVariable("id") long id) {
         userService.delete(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 }

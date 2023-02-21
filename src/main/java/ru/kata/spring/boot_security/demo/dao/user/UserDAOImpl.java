@@ -30,15 +30,25 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User findByUsername(String username) {
-        Query<User> userQuery = session.createQuery("FROM User U WHERE U.username = :username", User.class);
-        userQuery.setParameter("username", username);
+    public User findByFirstName(String firstName) {
+        Query<User> userQuery = session.createQuery("FROM User U WHERE U.firstName = :firstName", User.class);
+        userQuery.setParameter("firstName", firstName);
         User user = null;
         try {
             user = userQuery.getSingleResult();
         } catch (NoResultException ignored) {}
         return user;
     }
+
+    @Override
+    public User findByEmail(String email) {
+        Query<User> userQuery = session.createQuery("FROM User U WHERE U.email = :email", User.class);
+        userQuery.setParameter("email", email);
+        User user = null;
+        try {
+            user = userQuery.getSingleResult();
+        } catch (NoResultException ignored) {}
+        return user;    }
 
     @Override
     public void save(User user) {
@@ -49,10 +59,11 @@ public class UserDAOImpl implements UserDAO {
     public void update(User updatedUser, long id) {
         User newUser = session.get(User.class, id);
         newUser.setId(updatedUser.getId());
-        newUser.setUsername(updatedUser.getUsername());
+        newUser.setFirstName(updatedUser.getFirstName());
+        newUser.setLastName(updatedUser.getLastName());
+        newUser.setAge(updatedUser.getAge());
         newUser.setPassword(updatedUser.getPassword());
         newUser.setEmail(updatedUser.getEmail());
-        newUser.setYearOfBirth(updatedUser.getYearOfBirth());
         newUser.setRoles(updatedUser.getRoles());
     }
 

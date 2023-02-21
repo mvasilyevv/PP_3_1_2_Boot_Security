@@ -15,8 +15,16 @@ public class DatabaseInit {
 
     public void addFirstUser() {
         Role role = new Role("ROLE_ADMIN");
-        User user = new User("Admin", "admin", 1993, "admin@gmail.com");
+        User user = new User("admin", "admin", "admin", 35, "admin@gmail.com");
         user.setRole(role);
         userService.save(user);
     }
+
+    public void addSecondUser() {
+        Role role = new Role("ROLE_USER");
+        User user = new User("user", "user", "user", 30, "user@gmail.com");
+        user.setRole(role);
+        userService.save(user);
+    }
+
 }

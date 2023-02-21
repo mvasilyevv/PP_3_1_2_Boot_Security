@@ -22,14 +22,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/login").permitAll()
                 .anyRequest().hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                 .and()
                 .exceptionHandling().accessDeniedPage("/forbidden")
                 .and()
-                .formLogin().successHandler(successUserHandler)
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("email")
+                .loginProcessingUrl("/process_login")
+                .successHandler(successUserHandler)
+                .failureUrl("/login")
                 .permitAll()
                 .and()
                 .logout()

@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -12,19 +13,21 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    @Column
-    private String username;
+    @Column(name = "first_name")
+    private String firstName;
 
+    @Column(name = "last_name")
+    private String lastName;
     @Column
     private String password;
 
-    @Column(name = "year_of_birth")
-    private int yearOfBirth;
-
     @Column
+    private int age;
+
+    @Column(unique = true)
     private String email;
 
-   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
    @JoinTable(name = "User_Role",
            joinColumns = @JoinColumn(name = "user_id"),
            inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -33,10 +36,11 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, int yearOfBirth, String email) {
-        this.username = username;
+    public User(String firsName, String lastName, String password, int age, String email) {
+        this.firstName = firsName;
+        this.lastName = lastName;
         this.password = password;
-        this.yearOfBirth = yearOfBirth;
+        this.age = age;
         this.email = email;
     }
 
@@ -48,12 +52,20 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -64,12 +76,12 @@ public class User {
         this.password = password;
     }
 
-    public int getYearOfBirth() {
-        return yearOfBirth;
+    public int getAge() {
+        return age;
     }
 
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getEmail() {
@@ -96,11 +108,25 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
-                ", yearOfBirth=" + yearOfBirth +
+                ", age=" + age +
                 ", email='" + email + '\'' +
                 ", roles=" + roles +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && age == user.age && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, password, age, email, roles);
     }
 }
