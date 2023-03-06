@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-public class APIController {
+public class UserRestController {
     private final UserService userService;
     private final RoleServiceImpl roleService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public APIController(UserService userService, RoleServiceImpl roleService, ModelMapper modelMapper) {
+    public UserRestController(UserService userService, RoleServiceImpl roleService, ModelMapper modelMapper) {
         this.userService = userService;
         this.roleService = roleService;
         this.modelMapper = modelMapper;
@@ -51,7 +51,7 @@ public class APIController {
         return userService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList());
     }
 
-    @PostMapping("/user/new")
+    @PostMapping("/users")
     public ResponseEntity<HttpStatus> addNewUser(@RequestBody UserDTO newUserDTO) {
         Set<Role> roles = newUserDTO.getRoles().stream().map(role -> roleService.findByRoleTitle(role.getRole())).collect(Collectors.toSet());
         newUserDTO.setRoles(roles);
@@ -64,7 +64,7 @@ public class APIController {
         return convertToUserDTO(userService.findById(id));
     }
 
-    @PatchMapping("/users/{id}/edit")
+    @PutMapping("/users/{id}")
     public ResponseEntity<HttpStatus> updateUser(@PathVariable("id") long id, @RequestBody UserDTO updatedUserDTO) {
         Set<Role> roles = updatedUserDTO.getRoles().stream().map(role -> roleService.findByRoleTitle(role.getAuthority())).collect(Collectors.toSet());
         updatedUserDTO.setRoles(roles);
@@ -73,9 +73,9 @@ public class APIController {
         }
         userService.update(convertToUser(updatedUserDTO),id);
         return ResponseEntity.ok(HttpStatus.OK);
-
     }
-    @DeleteMapping("/users/{id}/delete")
+
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
         userService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);

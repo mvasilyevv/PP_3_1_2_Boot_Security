@@ -1,10 +1,10 @@
-async function loadFragment(url, fragmentId, containerId) {
-  const response = await fetch(url);
+async function loadFragment(path, containerId, fragmentId) {
+  const response = await fetch(path);
   const data = await response.text();
   const fragment = document.createElement("div");
   fragment.innerHTML = data;
-  const container = document.querySelector(containerId);
-  const fragmentContainer = fragment.querySelector(fragmentId);
+  const container = document.querySelector(fragmentId);
+  const fragmentContainer = fragment.querySelector(containerId);
   container.appendChild(fragmentContainer);
 }
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
 
 @Controller
-public class ErrorController {
+public class ErrorPageController {
     @GetMapping("/forbidden")
     public String showAdminPage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

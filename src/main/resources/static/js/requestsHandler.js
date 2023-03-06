@@ -19,7 +19,7 @@ export function postNewUserHandler() {
     };
 
     const jsonData = JSON.stringify(user);
-    fetch("http://localhost:8080/api/user/new", {
+    fetch("http://localhost:8080/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,13 +42,15 @@ export function postNewUserHandler() {
       .then(function () {
         const usersTable = document.getElementById("users-list-container");
         usersTable.remove();
-        configuration.usesListConfigurator();
+        configuration.usesListConfigurator().catch((err) => {
+          console.log(err);
+        });
       });
   });
 }
 
-// PATCH
-export function patchUserHandler() {
+// PUT
+export function putUserHandler() {
   const form = document.getElementById("edit-form-data");
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -68,8 +70,8 @@ export function patchUserHandler() {
     };
 
     const jsonData = JSON.stringify(user);
-    fetch(`http://localhost:8080/api/users/${user.id}/edit`, {
-      method: "PATCH",
+    fetch(`http://localhost:8080/api/users/${user.id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -97,7 +99,7 @@ export function deleteUserHandler() {
     const data = new FormData(form);
     const userID = data.get("id");
 
-    fetch(`http://localhost:8080/api/users/${userID}/delete`, {
+    fetch(`http://localhost:8080/api/users/${userID}`, {
       method: "DELETE",
     })
       .then(function () {
